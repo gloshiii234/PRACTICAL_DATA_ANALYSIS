@@ -1,0 +1,7 @@
+Day one
+Steps take
+1.Unzip files using gzip -dk (d unzips, while k keeps a copy of the zipped files)/ gunzip *.gz doesnt keep a copy 
+2. Ran fastqc command for all fastqc *.fastq
+3. Generates Fastqc report with 9variables
+4.Run the command [multiqc .] to execute multiqc
+5. Generates a multiqc report
