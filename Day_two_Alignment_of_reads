@@ -1,0 +1,30 @@
+Assignment two-Using the same files, perform an alignment of the reads using Klbesiella reference genome
+
+Step one -Downloading the reference genome of Klebsiella from NCBI Refseq ID GCF_000240185.1
+I worked in the same folder with the fastq reads 
+
+ALIGNMENT USING BWA
+-I first unzipped the reference folder i downloaded and navigated to the folder with the reference genome GCF_000240185.1_ASM24018v2_genomic.fna 
+-I also transferred my fastq files to this same folder
+-Indexing the reference genome(bwa index GCF_000240185.1_ASM24018v2_genomic.fna) creates a file with ending extension .idx
+-Indexing with samtools(samtools faidx GCF_000240185.1_ASM24018v2_genomic.fna) creates a file with ending .fai
+
+Aligning reads 1 and 2 to the reference genome(bwa mem GCF_000240185.1_ASM24018v2_genomic.fna read1 read2 > out.sam) outputs a sam file
+Converting the sam file to a bam file(samtools view -bS out.sam > out.bam)
+
+SAM is Sequence alignment map while BAM is binary alignment map , BAM contains SAM file contents but in a binary format which saves more space.
+-sorting the bam file(samtools sort out.bam -o sorted_out.bam), sorting is very convinient during variant discovery
+-Indexing the sorted bam file(samtools index sorted_out.bam) creates a sorted_out.bam.bai
+The goal of indexing is to retrieve alignments that overlap a specific location quickly without having to go through all of them
+Converting a bam file back to a sam file(samtools view -h file.bam > file.sam)
+
+
+ALIGNMENT USING HISAT2
+STep one:Indexing the reference genome(hisat2-build reference genome output.idx
+After running the above code, i had 8 files starting from .1.ht2 up to .8.ht2
+-My fastq reads were zipped, so i first unzipped them, and then converted them to fasta files using seqtk(seqtk -a file.fastq > file.fasta)
+-Performing alignment(hisat2 -f -x reference.idx -1 read1.fasta -2 read2.fasta -S output.sam
+-convert sam file to bam file using samtools and also sort and then index
+
+VARIANT CALLING TRIAL
+-To call for variants(samtools mpileup -uf referencegenome sorted.bam | bcftools view -bvcg - >output.raw.bcf
